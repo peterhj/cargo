@@ -652,6 +652,15 @@ fn build_base_args(cx: &Context,
         cmd = cmd.arg("-C").arg("rpath");
     }
 
+    let env_rustc_flags = os::getenv("CARGO_RUSTC_FLAGS");
+    match env_rustc_flags {
+        Some(flags) => {
+            let flag_toks: Vec<&str> = flags.as_slice().split(' ').collect();
+            cmd = cmd.args(flag_toks.as_slice());
+        }
+        None => {}
+    }
+
     return cmd;
 }
 
